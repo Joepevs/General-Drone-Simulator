@@ -12,9 +12,13 @@ from src.display import Display
 import time
 
 class DroneEnv(Env):
-    def __init__(self, config: dict, render_mode = None, max_episode_steps = 1000):
+    def __init__(self, config: dict, render_mode = None, max_episode_steps = 1000, mass_rand=False):
         self.motors = config["drone"]["motors"]
-        self.mass = config["drone"]["mass"]
+        if mass_rand:
+            self.masses = config["drone"]["mass_rand"]
+            self.mass = random.uniform(self.masses[0], self.masses[-1])
+        else:
+            self.mass = config["drone"]["mass"]
         self.inertia = config["drone"]["inertia"]
         self.thrust = config["drone"]["thrust"]
         self.gravity = config["drone"]["gravity"]

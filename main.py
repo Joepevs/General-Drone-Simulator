@@ -28,9 +28,10 @@ logger = configure(log_path, ["stdout", "tensorboard"])
 
 # CONTROL THE PROGRAM FLOW
 show_env = False
-import_last_best_model = True
+import_last_best_model = False
 train_model = True
 evaluate_model = False
+plot_results = False
 
 
 if show_env:
@@ -52,13 +53,13 @@ if show_env:
 
 if train_model:
     # TRAIN THE MODEL
-    num_envs = 16  # Number of parallel environments
+    num_envs = 100  # Number of parallel environments
     reward_threshold = 100000  # Stop training if the mean reward is greater or equal to this value
     max_episode_steps = 1000  # Max number of steps per episode
     total_timesteps = 10000000  # Total number of training steps (ie: environment steps)
     model_type = "PPO"
 
-    env_fns = [lambda: DroneEnv(config, max_episode_steps=1000) for _ in range(num_envs)]
+    env_fns = [lambda: DroneEnv(config, max_episode_steps=1000, mass_rand=True) for _ in range(num_envs)]
     env = DummyVecEnv(env_fns)
     check_env(env.envs[0], warn=True)  # Check if the environment is valid
 
@@ -70,12 +71,13 @@ if train_model:
                                 verbose=1)
 
     # Monitor handles the plotting of reward and survive time during training
-    monitor = Monitor(config)
-    monitor.log_data(1, 1)
-    monitor.update_plot()
-    logger = LoggerCallback(monitor=monitor)
+    if plot_results:
+        monitor = Monitor(config)
+        monitor.log_data(1, 1)
+        monitor.update_plot()
+        logger = LoggerCallback(monitor=monitor)
 
-    callbacks = [eval_callback, logger]
+        callbacks = [eval_callback, logger]
 
     # Create the model
     model = None
@@ -109,7 +111,7 @@ if train_model:
 
     # Do the actual learning
     try:
-        model.learn(total_timesteps=total_timesteps, progress_bar=True, callback=callbacks)
+        model.learn(total_timesteps=total_timesteps, progress_bar=True)
     except KeyboardInterrupt:
         print("Keyboard interrupt detected, exiting training loop")
     
