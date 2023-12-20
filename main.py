@@ -31,7 +31,7 @@ show_env = False
 import_last_best_model = False
 train_model = True
 evaluate_model = False
-plot_results = False
+plot_results = True
 
 
 if show_env:
@@ -53,7 +53,7 @@ if show_env:
 
 if train_model:
     # TRAIN THE MODEL
-    num_envs = 100  # Number of parallel environments
+    num_envs = 10  # Number of parallel environments
     reward_threshold = 100000  # Stop training if the mean reward is greater or equal to this value
     max_episode_steps = 1000  # Max number of steps per episode
     total_timesteps = 10000000  # Total number of training steps (ie: environment steps)
@@ -111,7 +111,7 @@ if train_model:
 
     # Do the actual learning
     try:
-        model.learn(total_timesteps=total_timesteps, progress_bar=True)
+        model.learn(total_timesteps=total_timesteps, progress_bar=True, callback=callbacks)
     except KeyboardInterrupt:
         print("Keyboard interrupt detected, exiting training loop")
     
