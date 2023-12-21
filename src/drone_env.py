@@ -16,7 +16,7 @@ class DroneEnv(Env):
         self.motors = config["drone"]["motors"]
         if mass_rand:
             self.masses = config["drone"]["mass_rand"]
-            self.mass = random.uniform(self.masses[0], self.masses[-1])
+            self.mass = random.uniform(self.masses[0], self.masses[1])
         else:
             self.mass = config["drone"]["mass"]
         self.inertia = config["drone"]["inertia"]
