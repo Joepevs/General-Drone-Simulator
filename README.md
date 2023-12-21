@@ -2,7 +2,7 @@
 ## Installation
 This project uses !(Poetry)[https://python-poetry.org/] for dependency management. Install poetry and run `poetry install` to install all dependencies. 
 If you don't want to use poetry you can install the dependencies manually using pip.
-
+Test
 ### Configuration
 Configuration of the drone environment can be done in the `config.yaml` file. Here you can change the motors of drones, the size of the environment, gravity, etc.
 Further configuration is done in the respective python files discussed below.
