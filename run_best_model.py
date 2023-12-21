@@ -20,7 +20,7 @@ print("Using device: {}".format(device))
 
 # Read config and set up tensorboard logging
 config = read_config("config.yaml")
-filename = "best_model"
+filename = "testtesttest"
 
 env = DroneEnv(config, render_mode="human", max_episode_steps=1000)
 try:
